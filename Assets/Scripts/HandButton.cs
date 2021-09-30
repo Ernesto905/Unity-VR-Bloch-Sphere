@@ -80,6 +80,7 @@ public class HandButton : XRBaseInteractable
        if(inPosition && inPosition != previousPress)
        {
            OnPress.Invoke();  //onpress event
+           Debug.Log("Button was pressed");
        }
 
         previousPress = inPosition;

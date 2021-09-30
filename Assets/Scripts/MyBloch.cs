@@ -15,7 +15,6 @@ public class MyBloch : MonoBehaviour
     private Complex theta = Complex.Zero;   
     private Complex phi = Complex.Zero;
 
-    float speed = 50.0f; 
     
 
     
@@ -32,7 +31,7 @@ public class MyBloch : MonoBehaviour
         DateTime currentTime = DateTime.Now;
 
         float secondsDegree = -(currentTime.Second / 60f) * 360f;
-        Debug.Log(secondsDegree);
+        //Debug.Log(secondsDegree);
         myBloch.transform.localRotation = UnityEngine.Quaternion.Euler(new Vector3(0,0,secondsDegree));
     
         
