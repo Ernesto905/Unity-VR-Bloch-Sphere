@@ -9,6 +9,9 @@ using System;
 
 public class MyBloch : MonoBehaviour
 {
+    public Vector3 BSphereStartPos;
+     
+    //public BSphereStartRot : Quaternion;
 
     private Complex alpha = Complex.Zero;
     private Complex beta = Complex.Zero;
@@ -21,7 +24,10 @@ public class MyBloch : MonoBehaviour
     public GameObject myBloch;  
     // Start is called before the first frame update
     void Start()        
-    {
+    {   
+        //used to determine starting pos of sphere
+        BSphereStartPos =  transform.localPosition;
+        Debug.Log( "Inside BS: current bloch location is" + BSphereStartPos);
         
     }
 
