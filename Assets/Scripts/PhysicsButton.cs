@@ -8,8 +8,8 @@ public class PhysicsButton : MonoBehaviour
 {
     public GameObject bSphere;
 
-    [SerializeField] private float threshold= .1f;
-    [SerializeField] private float deadzone = 0.025f;
+    [SerializeField] private float threshold= 0.1f;
+    [SerializeField] private float deadZone = 0.025f;
  
     private bool _isPressed;
     private Vector3 _startPos;
@@ -18,7 +18,7 @@ public class PhysicsButton : MonoBehaviour
 
 
     public UnityEvent onPressed, onReleased;
-    // Start is called before the first frame update
+   
     void Start()
     {
         //basic button functionality
@@ -41,7 +41,7 @@ public class PhysicsButton : MonoBehaviour
     {
         var value = Vector3.Distance(_startPos, transform.localPosition) / _joint.linearLimit.limit;
 
-        if (Math.Abs(value) < deadzone)
+        if (Math.Abs(value) < deadZone)
             value = 0;
 
         return Mathf.Clamp(value, -1f, 1f);  
@@ -51,7 +51,6 @@ public class PhysicsButton : MonoBehaviour
     {
         _isPressed = true;
         onPressed.Invoke();
-        Debug.Log("pressed!");
         resetBloch();
     }
 
@@ -59,7 +58,6 @@ public class PhysicsButton : MonoBehaviour
     {
         _isPressed = false;
         onReleased.Invoke();
-        Debug.Log("Released!");
     }
 
     private void resetBloch()
