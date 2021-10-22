@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System;
 
-public class PhysicsButton : MonoBehaviour
+public class ResetButton : MonoBehaviour
 {
     public GameObject bSphere;
 
@@ -72,8 +72,6 @@ public class PhysicsButton : MonoBehaviour
         {
             bSphere.transform.position = intiialPos;
         }
-            
 
-        Debug.Log("This is inside phys button: " + curBlochPos);
     }
 }

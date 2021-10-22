@@ -40,6 +40,8 @@ public class Hand : MonoBehaviour
         _body.interpolation = RigidbodyInterpolation.Interpolate;
         _body.mass = 20f;
 
+
+
         //Teleport hand to controllers
         _body.position = _followTarget.position;
         _body.rotation = _followTarget.rotation;
