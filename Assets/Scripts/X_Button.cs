@@ -135,11 +135,17 @@ public class X_Button : MonoBehaviour
         //configures rotator game object
         rotator = GameObject.Find("Rotator");
         Transform rotate = rotator.transform;  
-        rotate.transform.Rotate(0,0,0); 
+
+        //rotate.transform.Rotate(0,0,0); 
+        Debug.Log($"the current position is {receivedPos}");
         rotate.transform.Rotate(receivedPos);      
         
     }
 
+    private void returnCurrent()
+    {
+        //return the current vector state
+    }
 
 
     
