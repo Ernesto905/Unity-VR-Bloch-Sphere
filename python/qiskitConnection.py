@@ -28,32 +28,67 @@ def retState(qCirc):
     
 
 inp = ''
-while inp != 'exit':
+while True:
     
-    #gate decision
-    inp = input('Enter q input: ')
-    if inp == 'x': qc.x(0)
-    if inp == 'h': qc.h(0)
-    if inp == 'm': pass
-
-    #get current state of theta
-    qstate = retState(qc)
-    theta = toTheta(qstate[0])
-    
-    #alter the Vector according to the new value of theta
-    currentState[0] = int(theta.real)
-    
-    #string manipulation (For socket communication)
-    posString = ','.join(map(str, currentState))
-    print(f"the sent string is {posString}") #used for testing
-    
-    #send socket 
-    sock.sendall(posString.encode("UTF-8"))  
     recievedData = sock.recv(1024).decode("UTF-8") 
-    print(recievedData) #used for testing
+    
+    if recievedData == "XGate":
+        print('XGATE has been pressed')
+        
+        qc.x(0)
+        qstate = retState(qc)
+        theta = toTheta(qstate[0])
+        
+        #alter the Vector according to the new value of theta
+        currentState[0] = int(theta.real)
+        
+        posString = ','.join(map(str, currentState))
+        print(f"the sent string is {posString}") #used for testing
+        
+        
+        sock.sendall(posString.encode("UTF-8"))
+        
+    elif recievedData == "YGate":
+        print('XGATE has been pressed')
+        
+        qc.h(0)
+        qstate = retState(qc)
+        theta = toTheta(qstate[0])
+        
+        #alter the Vector according to the new value of theta
+        currentState[0] = int(theta.real)
+        
+        posString = ','.join(map(str, currentState))
+        print(f"the sent string is {posString}") #used for testing
+        
+        
+        sock.sendall(posString.encode("UTF-8"))
+        
+        
+        
+    else: print(recievedData)
     
     
     
+    # #gate decision
+    # inp = input('Enter q input: ')
+    # if inp == 'x': qc.x(0)
+    # if inp == 'h': qc.h(0)
+    # if inp == 'm': pass
+
+    # #get current state of theta
+    # qstate = retState(qc)
+    # theta = toTheta(qstate[0])
+    
+    # #alter the Vector according to the new value of theta
+    # currentState[0] = int(theta.real)
+    
+    # #string manipulation (For socket communication)
+    # posString = ','.join(map(str, currentState))
+    # print(f"the sent string is {posString}") #used for testing
+    
+    # #send socket 
+    # sock.sendall(posString.encode("UTF-8"))  
     
 
 

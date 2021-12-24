@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Text;
-public class X_Button : MonoBehaviour
+public class Y_Button : MonoBehaviour
 {
     public GameObject rotator;
     [SerializeField] private float threshold= 0.1f;
@@ -17,17 +17,10 @@ public class X_Button : MonoBehaviour
     public UnityEvent onPressed, onReleased;
     private string gate; 
 
-    //Socket setup 
-    Thread mThread;
-    public string connectionIP = "127.0.0.1";
-    public int connectionPort = 25001;
-    IPAddress localAdd;
-    TcpListener listener;
-    public static TcpClient client;
-
-    //Bloch Arrow positions
-    Vector3 receivedPos = Vector3.zero;
+     
     
+
+    Vector3 receivedPos = Vector3.zero;
 
     void Start()
     {
@@ -35,22 +28,8 @@ public class X_Button : MonoBehaviour
         _startPos = transform.localPosition;
         _joint = GetComponent<ConfigurableJoint>();
 
-        //commence socket connection
-        ThreadStart ts = new ThreadStart(GetInfo);
-        mThread = new Thread(ts);
-        mThread.Start();
-
-
     }
-    void GetInfo()
-    {
-        localAdd = IPAddress.Parse(connectionIP);
-        listener = new TcpListener(IPAddress.Any, connectionPort);
-        listener.Start();
-
-        client = listener.AcceptTcpClient();
-    }
-
+    
 
    
 
@@ -58,8 +37,8 @@ public class X_Button : MonoBehaviour
     {
 
         //---Establish network details----
-        NetworkStream nwStream = client.GetStream();
-        byte[] buffer = new byte[client.ReceiveBufferSize];
+        NetworkStream nwStream = X_Button.client.GetStream();
+        byte[] buffer = new byte[X_Button.client.ReceiveBufferSize];
 
         //---Send Confirmation---
         byte[] myWriteBuffer = Encoding.ASCII.GetBytes(gate); //Converting string to byte data
@@ -71,17 +50,17 @@ public class X_Button : MonoBehaviour
 
     void recieveConfirmation()
     {
+        Debug.Log("Made it here");
         //---Establish network details----
-        NetworkStream nwStream = client.GetStream();
-        byte[] buffer = new byte[client.ReceiveBufferSize];
+        NetworkStream nwStream = X_Button.client.GetStream();
+        byte[] buffer = new byte[X_Button.client.ReceiveBufferSize];
 
+        Debug.Log("Made it here2");
         // //---receiving Data from the Host----
-        int bytesRead = nwStream.Read(buffer, 0, client.ReceiveBufferSize); //Getting data in Bytes from Python
+        int bytesRead = nwStream.Read(buffer, 0, X_Button.client.ReceiveBufferSize); //Getting data in Bytes from Python
         string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead); //Converting byte data to string
 
-        Debug.Log($"The data recieved via socket is{dataReceived}");
-        receivedPos = StringToVector3(dataReceived);
-
+        Debug.Log(dataReceived);
     }
     public static Vector3 StringToVector3(string sVector)
     {
@@ -126,7 +105,7 @@ public class X_Button : MonoBehaviour
     {
         _isPressed = true;
         onPressed.Invoke();
-        xGate();
+        yGate();
     }
 
     private void Released()
@@ -135,24 +114,18 @@ public class X_Button : MonoBehaviour
         onReleased.Invoke();
     }
 
-    private void xGate()
+    private void yGate()
     { 
-        gate = "XGate";
+        gate = "YGate";
         sendConfirmation();
-
-        //Rotates Bloch Arrow (OLD; have to do it twice to get it to work. Keeping here just in case)
-        // rotator = GameObject.Find("Rotator");
-        // Transform rotate = rotator.transform;  
-        // rotate.transform.Rotate(receivedPos);      
+        
+       
 
         //Rotates Bloch Arrow 
         Quaternion rotationAmt = Quaternion.Euler(receivedPos);
         rotator = GameObject.Find("Rotator");
         rotator.transform.localRotation = rotationAmt;
-         
-
-        //Debuging Purposes
-        Debug.Log($"the rotation applied is vector: {receivedPos}");
+              
         
     }
 
