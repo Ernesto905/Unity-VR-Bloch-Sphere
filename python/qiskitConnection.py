@@ -1,4 +1,5 @@
-from qiskit import QuantumCircuit, execute, Aer
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import Statevector
 from math import sqrt, pi
 import numpy as np
 import socket
@@ -8,87 +9,67 @@ host, port = "127.0.0.1", 25001
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((host,port))
 
-#backend simulator setup
-backend = Aer.get_backend('statevector_simulator') 
-
 #initialize qbit
 currentState = [0,0,0] 
 qc = QuantumCircuit(1)
 
 #takes in the alpha phase state, converts to radian, and returns it as degrees
-def toTheta(alpha):
-    radians = 2 * np.arccos(alpha)
-    degrees = radians * 180 / pi
-    return degrees
+def toTheta(a):
+    angle = 2 * np.arccos(a)
+    return np.degrees(angle.real)
 
-#return phase states in numpy array 
-def retState(qCirc):
-    result = execute(qCirc,backend).result().get_statevector()
-    return result
+#takes in complex beta and angle theta in degrees and returns phi in degrees
+def toPhi(t, b):
+    t = np.radians(t)
+    angle = (np.log(b / np.sin(t/2))) / 1j
     
+    #deal with NaN
+    real = 0 if np.isnan(angle.real) else angle.real
+    
+    return np.degrees(real)
 
-inp = ''
 while True:
     
     recievedData = sock.recv(1024).decode("UTF-8") 
     
+    #qubit information to readable statevector
+    sv = Statevector(qc)
+    qstate = sv.data
+
     if recievedData == "XGate":
         print('XGATE has been pressed')
-        
         qc.x(0)
-        qstate = retState(qc)
-        theta = toTheta(qstate[0])
         
-        #alter the Vector according to the new value of theta
-        currentState[0] = int(theta.real)
-        
-        posString = ','.join(map(str, currentState))
-        print(f"the sent string is {posString}") #used for testing
-        
-        
-        sock.sendall(posString.encode("UTF-8"))
-        
-    elif recievedData == "YGate":
-        print('XGATE has been pressed')
-        
+    elif recievedData == "hGate":
+        print('HGATE has been pressed')
         qc.h(0)
-        qstate = retState(qc)
-        theta = toTheta(qstate[0])
+    
+    elif recievedData == "yGate":
+        print('YGATE has been pressed')
         
-        #alter the Vector according to the new value of theta
-        currentState[0] = int(theta.real)
-        
-        posString = ','.join(map(str, currentState))
-        print(f"the sent string is {posString}") #used for testing
-        
-        
-        sock.sendall(posString.encode("UTF-8"))
+        qc.y(qubit)(0)
         
         
         
-    else: print(recievedData)
+    else: 
+        raise Exception(f"Error: Recieved data unrecognized: {recievedData}")
+    
+    #Qubit properties 
+    alpha = qstate[0]
+    beta = qstate[1]
+    theta = toTheta(alpha)
+    phi = toPhi(theta, beta)
     
     
+    #alter the Vector according to the new value of theta
+    currentState[0] = int(theta)
+    currentState[1] = int(phi)
     
-    # #gate decision
-    # inp = input('Enter q input: ')
-    # if inp == 'x': qc.x(0)
-    # if inp == 'h': qc.h(0)
-    # if inp == 'm': pass
-
-    # #get current state of theta
-    # qstate = retState(qc)
-    # theta = toTheta(qstate[0])
+    posString = ','.join(map(str, currentState))
+    print(f"the sent string is {posString}") #used for testing
     
-    # #alter the Vector according to the new value of theta
-    # currentState[0] = int(theta.real)
     
-    # #string manipulation (For socket communication)
-    # posString = ','.join(map(str, currentState))
-    # print(f"the sent string is {posString}") #used for testing
-    
-    # #send socket 
-    # sock.sendall(posString.encode("UTF-8"))  
+    sock.sendall(posString.encode("UTF-8"))
     
 
 

@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Text;
-public class Y_Button : MonoBehaviour
+public class H_Button : MonoBehaviour
 {
     public GameObject rotator;
     [SerializeField] private float threshold= 0.1f;
@@ -50,17 +50,16 @@ public class Y_Button : MonoBehaviour
 
     void recieveConfirmation()
     {
-        Debug.Log("Made it here");
         //---Establish network details----
         NetworkStream nwStream = X_Button.client.GetStream();
         byte[] buffer = new byte[X_Button.client.ReceiveBufferSize];
 
-        Debug.Log("Made it here2");
         // //---receiving Data from the Host----
         int bytesRead = nwStream.Read(buffer, 0, X_Button.client.ReceiveBufferSize); //Getting data in Bytes from Python
         string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead); //Converting byte data to string
 
-        Debug.Log(dataReceived);
+        Debug.Log($"The data recieved via socket is{dataReceived}");
+        receivedPos = StringToVector3(dataReceived);
     }
     public static Vector3 StringToVector3(string sVector)
     {
@@ -105,7 +104,7 @@ public class Y_Button : MonoBehaviour
     {
         _isPressed = true;
         onPressed.Invoke();
-        yGate();
+        hGate();
     }
 
     private void Released()
@@ -114,12 +113,11 @@ public class Y_Button : MonoBehaviour
         onReleased.Invoke();
     }
 
-    private void yGate()
+    private void hGate()
     { 
-        gate = "YGate";
+        gate = "hGate";
         sendConfirmation();
         
-       
 
         //Rotates Bloch Arrow 
         Quaternion rotationAmt = Quaternion.Euler(receivedPos);

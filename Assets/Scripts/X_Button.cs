@@ -139,20 +139,16 @@ public class X_Button : MonoBehaviour
     { 
         gate = "XGate";
         sendConfirmation();
-
-        //Rotates Bloch Arrow (OLD; have to do it twice to get it to work. Keeping here just in case)
-        // rotator = GameObject.Find("Rotator");
-        // Transform rotate = rotator.transform;  
-        // rotate.transform.Rotate(receivedPos);      
+     
 
         //Rotates Bloch Arrow 
         Quaternion rotationAmt = Quaternion.Euler(receivedPos);
         rotator = GameObject.Find("Rotator");
         rotator.transform.localRotation = rotationAmt;
-         
+        
+        
 
-        //Debuging Purposes
-        Debug.Log($"the rotation applied is vector: {receivedPos}");
+        
         
     }
 
