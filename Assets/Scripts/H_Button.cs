@@ -58,7 +58,7 @@ public class H_Button : MonoBehaviour
         int bytesRead = nwStream.Read(buffer, 0, X_Button.client.ReceiveBufferSize); //Getting data in Bytes from Python
         string dataReceived = Encoding.UTF8.GetString(buffer, 0, bytesRead); //Converting byte data to string
 
-        Debug.Log($"The data recieved via socket is{dataReceived}");
+        Debug.Log($"The data recieved via socket is {dataReceived}");
         receivedPos = StringToVector3(dataReceived);
     }
     public static Vector3 StringToVector3(string sVector)

@@ -11,7 +11,8 @@ sock.connect((host,port))
 
 #initialize qbit
 currentState = [0,0,0] 
-qc = QuantumCircuit(1)
+qc = QuantumCircuit(1,1)
+
 
 #takes in the alpha phase state, converts to radian, and returns it as degrees
 def toTheta(a):
@@ -37,17 +38,16 @@ while True:
     qstate = sv.data
 
     if recievedData == "XGate":
-        print('XGATE has been pressed')
+        lastGate = "X Gate"
         qc.x(0)
         
     elif recievedData == "hGate":
-        print('HGATE has been pressed')
+        lastGate = "H Gate"
         qc.h(0)
     
     elif recievedData == "yGate":
-        print('YGATE has been pressed')
-        
-        qc.y(qubit)(0)
+        lastGate = "Y Gate"
+        qc.y(0)
         
         
         
@@ -59,6 +59,8 @@ while True:
     beta = qstate[1]
     theta = toTheta(alpha)
     phi = toPhi(theta, beta)
+    sv = Statevector(qc)
+
     
     
     #alter the Vector according to the new value of theta
@@ -66,7 +68,7 @@ while True:
     currentState[1] = int(phi)
     
     posString = ','.join(map(str, currentState))
-    print(f"the sent string is {posString}") #used for testing
+    print(f"Gate: {lastGate}\nString: {posString}\nStatevector: {sv.data}") #used for testing
     
     
     sock.sendall(posString.encode("UTF-8"))
