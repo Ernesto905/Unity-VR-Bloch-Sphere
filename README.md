@@ -2,7 +2,7 @@
  VR Based 3 dimensional representation of Bloch sphere; a two-level quantum mechanical system (qubit).
  ## How to run
  1. Load up Repo packages in Unity game engine.
- 2. initiate a Conda virtual enviornment. Inside, download the libraries within requirements.txt in the python folder. 
+ 2. initiate a Conda virtual environment. Inside, download the libraries within requirements.txt in the python folder. 
  3. Run game, then immediately execute python script within the python folder (ensure python interpreter is conda env) in order to enable socket communication. 
  4. Gates should now be fully functional.
 # Learning Resources
