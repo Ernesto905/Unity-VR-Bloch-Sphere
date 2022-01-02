@@ -652,7 +652,7 @@ GameObject:
   - component: {fileID: 254517917}
   - component: {fileID: 254517916}
   m_Layer: 0
-  m_Name: 0
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -697,7 +697,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: l0>
+  m_text: l1>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1087,8 +1087,8 @@ GameObject:
   - component: {fileID: 432742299}
   - component: {fileID: 432742298}
   - component: {fileID: 432742297}
-  - component: {fileID: 432742296}
   - component: {fileID: 432742295}
+  - component: {fileID: 432742296}
   m_Layer: 0
   m_Name: Push
   m_TagString: Untagged
@@ -1216,16 +1216,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 432742293}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec443d8ed71d0104fb93e3be526297c0, type: 3}
+  m_Script: {fileID: 11500000, guid: d8352e910cfc4424298dd0c1ba35344c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bSphere: {fileID: 0}
+  rotator: {fileID: 0}
   threshold: 0.1
   deadZone: 0.025
   onPressed:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 432742295}
+      - m_Target: {fileID: 450730527}
         m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
         m_MethodName: PlayOneShot
         m_Mode: 2
@@ -3528,7 +3528,7 @@ GameObject:
   - component: {fileID: 1119917966}
   - component: {fileID: 1119917965}
   m_Layer: 0
-  m_Name: 1
+  m_Name: 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3573,7 +3573,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: l1>
+  m_text: l0>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

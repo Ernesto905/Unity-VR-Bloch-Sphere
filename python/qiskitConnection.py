@@ -11,31 +11,30 @@ sock.connect((host,port))
 
 #initialize qbit
 currentState = [0,0,0] 
-qc = QuantumCircuit(1,1)
+qc = QuantumCircuit(1)
 
 
-#takes in the alpha phase state, converts to radian, and returns it as degrees
+#takes in the alpha phase state. Normalize it, and returns it as degrees
 def toTheta(a):
-    angle = 2 * np.arccos(a)
-    return np.degrees(angle.real)
+    normalized_alpha = np.sqrt((a.real **2) + (a.imag ** 2))
 
-#takes in complex beta and angle theta in degrees and returns phi in degrees
+    angle = 2 * np.arccos(normalized_alpha)
+    
+    return np.degrees(angle)
+
+#takes in complex beta and angle theta in degrees. Derives normalized phi, then returns it in degrees
 def toPhi(t, b):
     t = np.radians(t)
-    angle = (np.log(b / np.sin(t/2))) / 1j
+
+    angle = (np.log(b / np.sin(t/2))) / 1j if b != 0 else 0
+    normalized_angle = np.sqrt((angle.real ** 2) + (angle.imag ** 2))
     
-    #deal with NaN
-    real = 0 if np.isnan(angle.real) else angle.real
-    
-    return np.degrees(real)
+    return np.degrees(normalized_angle)
+
 
 while True:
-    
     recievedData = sock.recv(1024).decode("UTF-8") 
     
-    #qubit information to readable statevector
-    sv = Statevector(qc)
-    qstate = sv.data
 
     if recievedData == "XGate":
         lastGate = "X Gate"
@@ -49,10 +48,16 @@ while True:
         lastGate = "Y Gate"
         qc.y(0)
         
-        
+    elif recievedData == "zGate":
+        lastGate = "Z Gate"
+        qc.z(0)
         
     else: 
         raise Exception(f"Error: Recieved data unrecognized: {recievedData}")
+    
+    #qubit information to readable statevector
+    sv = Statevector(qc)
+    qstate = sv.data
     
     #Qubit properties 
     alpha = qstate[0]
@@ -68,10 +73,10 @@ while True:
     currentState[1] = int(phi)
     
     posString = ','.join(map(str, currentState))
-    print(f"Gate: {lastGate}\nString: {posString}\nStatevector: {sv.data}") #used for testing
     
-    
+    print(f"Sent state is: {posString} and the sent gate is {lastGate}")
     sock.sendall(posString.encode("UTF-8"))
+
     
 
 
