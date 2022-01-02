@@ -3,8 +3,8 @@
 ![](images/Bloch%20Sphere%20VR%20scene.png)
  ## How to run
  1. Load up Repo packages in Unity game engine.
- 2. initiate a Conda virtual enviornment. Inside, download the libraries within requirements.txt in the python folder. 
- 3. Run game, then immediately execute python script within the python folder (ensure python interpreter is conda env) in order to enable socket communication. 
+ 2. Initiate a Conda virtual environment using the requirements.txt inside the python folder. 
+ 3. Run simulator, then immediately execute python script within the python folder (ensure python interpreter is the newly created conda virtual env) in order to enable socket communication. 
  4. Gates should now be fully functional.
 # Learning Resources
 ### Berkeley quantum computing playlist
